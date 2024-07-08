@@ -1,0 +1,1 @@
+{"version":3,"file":"IRSFiniteStateMachineEngineProps.d.ts","sourceRoot":"","sources":["../../src/type/IRSFiniteStateMachineEngineProps.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,YAAY,CAAC;AAE1C,MAAM,WAAW,gCAAgC;IAC7C,WAAW,CAAC,EAAE,CAAC,KAAK,EAAE,KAAK,GAAG,GAAG,KAAK,YAAY,CAAC,GAAG,CAAC,GAAG,OAAO,CAAC,GAAG,CAAC,GAAG,GAAG,CAAA;CAC/E"}
