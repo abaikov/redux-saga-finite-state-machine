@@ -1,3 +1,3 @@
 import { TRSSagaIterator } from './TRSSagaIterator';
-export type TRSStateActionFunction<RunProps = undefined> = (runProps?: RunProps) => TRSSagaIterator<void>;
+export type TRSStateActionFunction<RunProps = {}> = (runProps: RunProps) => TRSSagaIterator<void>;
 //# sourceMappingURL=TRSStateActionFunction.d.ts.map

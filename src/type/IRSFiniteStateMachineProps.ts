@@ -4,13 +4,13 @@ import { TRSStateActionFunction } from './TRSStateActionFunction';
 export interface IRSFiniteStateMachineProps<
     ERSFiniteStateMachineState extends string | number | symbol = string,
     ReduxStoreState = undefined,
-    RunProps = undefined
+    RunProps = {}
 > {
     defaultState?: ERSFiniteStateMachineState | (() => ERSFiniteStateMachineState)
-    stateSelector?: (storeState: ReduxStoreState, props?: RunProps) => ERSFiniteStateMachineState;
+    stateSelector?: (storeState: ReduxStoreState, props: RunProps) => ERSFiniteStateMachineState;
     states: {
         [state in ERSFiniteStateMachineState]: TRSStateActionFunction<RunProps>
     }
-    handleCancelled?: (runProps?: RunProps) => SagaIterator<void> | Promise<void> | void
+    handleCancelled?: (runProps: RunProps) => SagaIterator<void> | Promise<void> | void
     handleError?: (error: Error | any, runProps?: RunProps) => SagaIterator<void> | Promise<void> | void
 }

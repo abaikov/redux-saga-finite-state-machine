@@ -5,7 +5,7 @@ import { TRSStateActionFunction } from './type/TRSStateActionFunction';
 export class RSFiniteStateMachine<
     ERSFiniteStateMachineState extends string | number | symbol = string,
     ReduxStoreState = undefined,
-    RunProps = undefined
+    RunProps = {}
 > {
     private props: IRSFiniteStateMachineProps<ERSFiniteStateMachineState, ReduxStoreState, RunProps>;
 
@@ -16,7 +16,7 @@ export class RSFiniteStateMachine<
     createSaga() {
         const self = this;
         let lastState: ERSFiniteStateMachineState;
-        const stateChange = function* (runProps?: RunProps) {
+        const stateChange = function* (runProps: RunProps) {
             try {
                 let state: ERSFiniteStateMachineState = self.props.stateSelector
                     ? yield select(
@@ -60,7 +60,7 @@ export class RSFiniteStateMachine<
             }
         };
 
-        return function* (runProps?: RunProps) {
+        return function* (runProps: RunProps) {
             let error = null;
             try {
                 while (!error) {

@@ -12,7 +12,7 @@ export class RSFiniteStateMachineEngine {
     static runStateMachine<
         ERSFiniteStateMachineState extends string | number | symbol = string,
         ReduxStoreState = undefined,
-        RunProps = undefined
+        RunProps = {}
     >(
         stateMachine: RSFiniteStateMachine<ERSFiniteStateMachineState, ReduxStoreState, RunProps>, 
         options?: IRSFiniteStateMachineEngineRunMachineOptions<RunProps>
@@ -76,7 +76,7 @@ export class RSFiniteStateMachineEngine {
     runMachineWithProps<
         ERSFiniteStateMachineState extends string | number | symbol = string,
         ReduxStoreState = undefined,
-        RunProps = undefined
+        RunProps = {}
     >(
         stateMachine: RSFiniteStateMachine<ERSFiniteStateMachineState, ReduxStoreState, RunProps>,
         runProps?: RunProps
