@@ -193,7 +193,7 @@ This interface describes the properties required to configure a finite state mac
 
 ## Contributing
 
-Contributions are welcome! Please read our contributing guidelines before submitting pull requests to the project.
+Contributions are welcome!
 
 ## License
 
