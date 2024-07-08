@@ -35,10 +35,10 @@ Here is how you can define and use a state machine in a React component:
 #### Defining a State Machine
 
 ```typescript
-import { RSFiniteStateMachine, IRSFiniteStateMachineProps } from 'redux-saga-finite-state-machine';
+import { RSFiniteStateMachine } from 'redux-saga-finite-state-machine';
 
 // Define your states and transitions
-const myStateMachineProps: IRSFiniteStateMachineProps = {
+const myStateMachineProps = {
     defaultState: 'idle',
     states: {
         idle: (props) => function* () { /* Logic for idle state */ },
