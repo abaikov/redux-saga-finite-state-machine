@@ -1,7 +1,7 @@
 
 # Redux-Saga-Finite-State-Machine
 
-Redux-Saga-Finite-State-Machine is a TypeScript library designed for efficient state machine management within Redux-Saga environments. It provides robust handling of application state transitions in response to asynchronous events, specifically tailored for React and Redux applications.
+Redux-Saga-Finite-State-Machine is a TypeScript library designed for efficient state machine management within Redux-Saga environments.
 
 ## Features
 
@@ -11,6 +11,12 @@ Redux-Saga-Finite-State-Machine is a TypeScript library designed for efficient s
 
 ## Example project
 https://github.com/abaikov/rsfsm-example
+
+## Related Packages
+
+If you are using `redux-saga-finite-state-machine`, you might also find the following related packages useful:
+
+- **[react-redux-saga-finite-state-machine](https://www.npmjs.com/package/react-redux-saga-finite-state-machine)**: An extension of Redux Saga Finite State Machine specifically tailored for React applications. It provides additional bindings to work seamlessly with React and Redux.
 
 ## Installation
 
@@ -26,29 +32,70 @@ Or using yarn:
 yarn add redux-saga-finite-state-machine
 ```
 
-## Usage without components
+## Usage
 
-### Example of State Machine Definition and Usage
+### Defining a State Machine
 
-Here is how you can define and use a state machine in a React component:
-
-#### Defining a State Machine
+Here is a general implementation of a state machine, demonstrating how to handle user actions and system events:
 
 ```typescript
 import { RSFiniteStateMachine } from 'redux-saga-finite-state-machine';
+import { take, put } from 'redux-saga/effects';
 
 // Define your states and transitions
 const myStateMachineProps = {
     defaultState: 'idle',
     states: {
-        idle: (props) => function* () { /* Logic for idle state */ },
-        loading: (props) => function* () { /* Logic for loading state */ },
-        success: (props) => function* () { /* Logic for success state */ }
+        idle: (props) => function* () { 
+            // Logic for idle state: waiting for user to enter the page
+            yield take('USER_ENTERED_PAGE_ACTION');
+        },
+        loading: (props) => function* () { 
+            try {
+                // Logic for loading state: simulate data fetching or processing
+                yield put('DATA_LOADING_COMPLETED_ACTION'); // Waiting for loading to complete
+            } catch (e) {
+                yield put('DATA_LOADING_FAILED_ACTION'); // Handling loading failure
+            }
+        },
+        error: (props) => function* () { 
+            // Logic for error state: wait for user to attempt to load again
+            yield take('RETRY_LOADING_BUTTON_CLICK_ACTION');
+        }
     },
     handleError: (error, props) => function* () { console.error(error); }
 };
 
-export const myStateMachine = new RSFiniteStateMachine(myStateMachineProps);
+// Instantiate the state machine with the defined properties
+const myStateMachine = new RSFiniteStateMachine(myStateMachineProps);
+```
+
+### Redux Toolkit Reducer Example
+
+Here is how you can define a Redux reducer to manage the states of your state machine:
+
+```typescript
+import { createReducer } from '@reduxjs/toolkit';
+
+const initialState = {
+    currentState: 'idle'
+};
+
+const appStateReducer = createReducer(initialState, (builder) => {
+    builder
+        .addCase('USER_ENTERED_PAGE_ACTION', (state) => {
+            state.currentState = 'loading';
+        })
+        .addCase('DATA_LOADING_COMPLETED_ACTION', (state) => {
+            state.currentState = 'success';
+        })
+        .addCase('DATA_LOADING_FAILED_ACTION', (state) => {
+            state.currentState = 'error';
+        })
+        .addCase('RETRY_LOADING_BUTTON_CLICK_ACTION', (state) => {
+            state.currentState = 'loading';
+        });
+});
 ```
 
 ### Handling Actions with State Machines
@@ -102,10 +149,11 @@ sagaMiddleware.run(function*() {
 });
 ```
 
-#### Using the State Machine in a Component
+#### Using the State Machine in a сomponent
+
+If you are using React, you might consider using the **[React Redux Saga Finite State Machine](https://www.npmjs.com/package/react-redux-saga-finite-state-machine)** package instead, which provides additional bindings specifically designed for React applications. However, here is a general approach to integrating the Redux Saga Finite State Machine in a React component:
 
 ```javascript
-
 function MyComponent(props) {
     React.useEffect(() => {
         const stop = stateMachineEngine.runMachineWithProps(myStateMachine, props);
