@@ -114,7 +114,7 @@ function MyComponent(props) {
         return () => {
             stop();
         };
-    }, []);
+    }, [props]);
 
     return <div>Interactive Component with State Management</div>;
 }

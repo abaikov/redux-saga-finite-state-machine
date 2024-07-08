@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-finite-state-machine",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A library for seamlessly creating and managing state machines in Redux-Saga",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -20,7 +20,19 @@
     "saga",
     "finite",
     "state",
-    "machine"
+    "machine",
+    "redux-state-machine",
+    "react-redux-state-machine",
+    "redux-saga-finite-state-machine",
+    "state-machine",
+    "react-state-machine",
+    "react-redux-saga-finite-state-machine",
+    "redux-saga-state-machine",
+    "finite-state-machine",
+    "redux-saga",
+    "react-redux",
+    "rtk",
+    "redux-toolkit"
   ],
   "author": "Andrei Baikov",
   "license": "MIT",
