@@ -8,7 +8,9 @@ Redux-Saga-Finite-State-Machine is a TypeScript library designed for efficient s
 - Define and manage state machines using Redux-Saga.
 - Handle state transitions based on Redux actions.
 - Custom error and cancellation handling within state machine workflows.
-- Seamless integration with React and Redux.
+
+## Example project
+https://github.com/abaikov/rsfsm-example
 
 ## Installation
 
