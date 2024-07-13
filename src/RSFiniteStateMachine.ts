@@ -53,21 +53,24 @@ export class RSFiniteStateMachine<
                             if (!currentStateActions) {
                                 throw new Error('RSFiniteStateMachine Error: there are no actions for state "' + String(state)) + '"';
                             }
-
-                            if (lastState === state) {
-                                if (process.env.NODE_ENV !== 'production' && stateCount > 100) {
-                                    console.warn(
-                                        'RSFiniteStateMachine detected an infinite cycle on the "' +
-                                        String(lastState) + 
-                                        '" state. Probably you forgot to ad something like `yield take(MY_ACTION)` or to change state.' +
-                                        'Also hot reloading can cause this warning, it will not appear in the production mode.'
-                                    );
+                            if (process.env.NODE_ENV !== 'production') {
+                                if (lastState === state) {
+                                    if (stateCount > 100) {
+                                        console.warn(
+                                            'RSFiniteStateMachine detected an infinite cycle on the "' +
+                                            String(lastState) + 
+                                            '" state. Probably you forgot to ad something like `yield take(MY_ACTION)` or to change state.' +
+                                            'Also hot reloading can cause this warning, it will not appear in the production mode.'
+                                        );
+                                        stateCount = 0;
+                                    } else {
+                                        stateCount ++;
+                                    }
+                                    // throw new Error(`RSFiniteStateMachine Error: the same state "${String(lastState)}" called twice  in a row`);
+                                } else {
+                                    lastState = state;
                                     stateCount = 0;
                                 }
-                                // throw new Error(`RSFiniteStateMachine Error: the same state "${String(lastState)}" called twice  in a row`);
-                            } else {
-                                lastState = state;
-                                stateCount = 0;
                             }
 
                             yield call(currentStateActions, runProps, startProps);
