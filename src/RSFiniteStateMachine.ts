@@ -45,7 +45,7 @@ export class RSFiniteStateMachine<
                 }
 
                 if (lastState === state) {
-                    throw new Error(`RSFiniteStateMachine Error: the same state "${String(lastState)}" called twice  in a row`);
+                    // throw new Error(`RSFiniteStateMachine Error: the same state "${String(lastState)}" called twice  in a row`);
                 } else {
                     lastState = state;
                 }
