@@ -75,7 +75,7 @@ export class RSFiniteStateMachine<
                             if (self.props.handleError) {
                                 yield call(self.props.handleError, e, runProps);
                             } else {
-                                return e;
+                                throw e;
                             }
                         }
                     }, runProps)) as (Error | void);

@@ -75,9 +75,9 @@ export class RSFiniteStateMachineEngine {
                 while (true) {
                     let { payload: {
                         task,
-                        cancelTask,
+                        awaitForTaskCancel,
                         runProps
-                    } }: {payload: any } = yield take(channel);
+                    } }: { payload: any } = yield take(channel);
                     yield fork(function*() {
                         const runningTask: Task = yield fork(function*() {
                             try {
@@ -90,7 +90,7 @@ export class RSFiniteStateMachineEngine {
                                 }
                             }
                         });
-                        yield call(cancelTask);
+                        yield call(awaitForTaskCancel);
                         yield cancel(runningTask);
                     });
                 }
@@ -120,7 +120,7 @@ export class RSFiniteStateMachineEngine {
         this.emitter?.({
             payload: {
                 task,
-                cancelTask: () => {
+                awaitForTaskCancel: () => {
                     return cancelTaskPromise;
                 },
                 runProps,
