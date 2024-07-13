@@ -46,11 +46,11 @@ import { take, put } from 'redux-saga/effects';
 const myStateMachineProps = {
     defaultState: 'idle',
     states: {
-        idle: (props) => function* () { 
+        idle: function* (props) { 
             // Logic for idle state: waiting for user to enter the page
             yield take('USER_ENTERED_PAGE_ACTION');
         },
-        loading: (props) => function* () { 
+        loading: function* (props) { 
             try {
                 // Logic for loading state: simulate data fetching or processing
                 yield put('DATA_LOADING_COMPLETED_ACTION'); // Waiting for loading to complete
@@ -58,12 +58,12 @@ const myStateMachineProps = {
                 yield put('DATA_LOADING_FAILED_ACTION'); // Handling loading failure
             }
         },
-        error: (props) => function* () { 
+        error: function* (props) { 
             // Logic for error state: wait for user to attempt to load again
             yield take('RETRY_LOADING_BUTTON_CLICK_ACTION');
         }
     },
-    handleError: (error, props) => function* () { console.error(error); }
+    handleError: function* (error, props) { console.error(error); }
 };
 
 // Instantiate the state machine with the defined properties
