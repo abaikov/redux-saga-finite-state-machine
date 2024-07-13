@@ -97,7 +97,7 @@ const myStateMachineProps = {
     },
     onStop: function* (runProps, startProps) {
         // Don't forget to unsubscribe
-        emitter(END);
+        startProps.channel.close();
     },
     handleError: function* (error, props) { console.error(error); }
 };
