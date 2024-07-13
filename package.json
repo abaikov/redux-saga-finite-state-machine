@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-finite-state-machine",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "description": "A library for seamlessly creating and managing state machines in Redux-Saga",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -41,6 +41,7 @@
   },
   "homepage": "https://github.com/abaikov/redux-saga-finite-state-machine#readme",
   "devDependencies": {
+    "@types/node": "^20.14.10",
     "@types/react-redux": "^7.1.33",
     "typescript": "^5.5.3"
   },

@@ -1,3 +1,3 @@
 import { TRSSagaIterator } from './TRSSagaIterator';
 
-export type TRSStateActionFunction<RunProps = {}> = (runProps: RunProps) => TRSSagaIterator<void>
+export type TRSStateActionFunction<RunProps = {}, StartProps = {}> = (runProps: RunProps, startProps?: StartProps) => TRSSagaIterator<void>

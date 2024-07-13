@@ -45,23 +45,59 @@ import { take, put } from 'redux-saga/effects';
 // Define your states and transitions
 const myStateMachineProps = {
     defaultState: 'idle',
+    // It will block everything until finished
+    onStart: function* (runProps) {
+        //Here you can init subscriptions to sockets or any other events
+        //and pass the saga channel to other components as 'startProps'
+        const myChannel = eventChannel(emitter => {
+            // Subscribe
+
+            // The subscriber must return an unsubscribe function
+            return () => {
+                //Unsubscribe
+            }
+        });
+        const channel = yield call(myChannel, value);
+
+        return {
+            channel
+        }
+    },
     states: {
-        idle: function* (props) { 
+        idle: function* (runProps, startProps) { 
             // Logic for idle state: waiting for user to enter the page
             yield take('USER_ENTERED_PAGE_ACTION');
+            // or yield take(startProps.channel);
         },
-        loading: function* (props) { 
+        loading: function* (runProps, startProps) { 
             try {
                 // Logic for loading state: simulate data fetching or processing
-                yield put('DATA_LOADING_COMPLETED_ACTION'); // Waiting for loading to complete
+                yield put({ 
+                    type: 'DATA_LOADING_COMPLETED_ACTION',
+                    payload: {
+                        id: runProps.id
+                    }
+                }); // Waiting for loading to complete
+                // or startProps.emitter({
+                //     type: 'DATA_LOADING_COMPLETED_ACTION',
+                // })
             } catch (e) {
-                yield put('DATA_LOADING_FAILED_ACTION'); // Handling loading failure
+                yield put({
+                    type: 'DATA_LOADING_FAILED_ACTION',
+                    payload: {
+                        id: runProps.id
+                    }
+                }); // Handling loading failure
             }
         },
-        error: function* (props) { 
+        error: function* (runProps) { 
             // Logic for error state: wait for user to attempt to load again
             yield take('RETRY_LOADING_BUTTON_CLICK_ACTION');
         }
+    },
+    onStop: function* (runProps, startProps) {
+        // Don't forget to unsubscribe
+        emitter(END);
     },
     handleError: function* (error, props) { console.error(error); }
 };
@@ -110,12 +146,13 @@ const store = configureStore({
     reducer: ReduxStoreCombinedReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
 });
+const stateMachineEngine = new RSFiniteStateMachineEngine();
 
 sagaMiddleware.run(function*() {
     yield all([
         takeEvery(
             START_MACHINE_ACTION_TYPE, 
-            RSFiniteStateMachineEngine.runStateMachine(RSFSMExampleStateMachine, {
+            stateMachineEngine.runStateMachine(myStateMachine, {
                 cancelSelector: STOP_MACHINE_ACTION_TYPE
             })
         )
@@ -174,8 +211,10 @@ function MyComponent(props) {
 
 This interface describes the properties required to configure a finite state machine:
 
-- **`defaultState`**: The initial state of the machine. Can be a literal value or a function that returns the state.
 - **`states`**: An object mapping each state to a generator function that executes the logic for that state.
+- **`defaultState`**: Optional. The initial state of the machine. Can be a literal value or a function that returns the state.
+- **`onStart`**: Optional. A blocking function called before the states generator functions.
+- **`onStop`**: Optional. A blocking function called in the end.
 - **`handleError`**: Optional. A function called when an error occurs within the state machine.
 
 ### `RSFiniteStateMachine`

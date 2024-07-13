@@ -35,6 +35,37 @@ export class RSFiniteStateMachineEngine {
         this.props = props || {};
     }
 
+    public runStateMachine<
+        ERSFiniteStateMachineState extends string | number | symbol = string,
+        ReduxStoreState = undefined,
+        RunProps = {}
+    >(
+        stateMachine: RSFiniteStateMachine<ERSFiniteStateMachineState, ReduxStoreState, RunProps>,
+        options?: IRSFiniteStateMachineEngineRunMachineOptions<RunProps>
+    ) {
+        const self = this;
+        return function* (action: Action) {
+            try {
+                const runProps: RunProps = options?.mapActionToProps ? options.mapActionToProps(action) : action as RunProps;
+                const saga = stateMachine.createSaga();
+                const task: Task = yield fork(
+                    saga,
+                    runProps
+                );
+                if (options?.cancelSelector) {
+                    yield take(options.cancelSelector);
+                    yield cancel(task);
+                }
+            } catch (e) {
+                if (self.props.handleError) {
+                    yield call(self.props.handleError, e);
+                } else {
+                    throw e;
+                }
+            }
+        }
+    }
+
     start() {
         const self = this;
         return function* () {
