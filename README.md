@@ -46,7 +46,7 @@ import { take, put } from 'redux-saga/effects';
 const myStateMachineProps = {
     defaultState: 'idle',
     stateSelector: (myReduxStoreState, runProps) => 
-        myReduxStoreState.myModule.entites[runProps.id].state, // or 'status' 
+        myReduxStoreState.myModule.entities[runProps.id].state, // or 'status' 
     // It will block everything until finished
     onStart: function* (runProps) {
         //Here you can init subscriptions to sockets or any other events

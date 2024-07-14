@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-finite-state-machine",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A library for seamlessly creating and managing state machines in Redux-Saga",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
