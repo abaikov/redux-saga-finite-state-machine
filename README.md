@@ -45,7 +45,8 @@ import { take, put } from 'redux-saga/effects';
 // Define your states and transitions
 const myStateMachineProps = {
     defaultState: 'idle',
-    stateSelector: (myReduxStoreState) => myReduxStoreState.myModule.state // or 'status' 
+    stateSelector: (myReduxStoreState, runProps) => 
+        myReduxStoreState.myModule.entites[runProps.id].state, // or 'status' 
     // It will block everything until finished
     onStart: function* (runProps) {
         //Here you can init subscriptions to sockets or any other events
@@ -100,7 +101,7 @@ const myStateMachineProps = {
         // Don't forget to unsubscribe
         startProps.channel.close();
     },
-    handleError: function* (error, props) { console.error(error); }
+    handleError: function* (error, runProps) { console.error(error); }
 };
 
 // Instantiate the state machine with the defined properties
